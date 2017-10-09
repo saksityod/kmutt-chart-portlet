@@ -165,9 +165,7 @@ public class DatasourceRepository {
 		}
 		return valueString;
 	}
-	
-	
-	public List<FilterValueM> fetchFilterValueCascade(FilterEntity fe,List<FilterM> filters) {
+	public List<FilterValueM> fetchFilterValueCascade(FilterEntity fe,List<FilterM> filters)  {
 		try{
 			// normal filter
 			logger.debug("fetch filter value cascade "+fe.getFilterId()+":"+fe.getFilterName());
@@ -198,7 +196,6 @@ public class DatasourceRepository {
 	  }
 	}
 
-	
 	public FilterValueM buildFilterItems(Object[] rf){
 		FilterValueM fv = new FilterValueM();
 		if(rf.length==1){
