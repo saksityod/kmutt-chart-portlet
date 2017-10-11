@@ -189,7 +189,8 @@ public class ChartCommonPortlet {
 			
 		
 			logger.info("=="+instanceId+"==> ---> Call chartService.getFilterService(paramServicefilter)");
-			List<FilterM> serviceFilters = chartService.getFilterService(paramServicefilter);
+			//List<FilterM> serviceFilters = chartService.getFilterService(paramServicefilter);
+			List<FilterM> serviceFilters = chartService.getFilterService(paramServicefilter, instanceId);
 			logger.info("=="+instanceId+"==> ---> Retrive auto filter");
 			
 			

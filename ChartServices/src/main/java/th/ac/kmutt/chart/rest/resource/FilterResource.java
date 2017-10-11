@@ -182,7 +182,8 @@ public class FilterResource extends BaseResource {
 							List<FilterM> filters = null;
 							// try{
 							logger.info(":: Msg ===>> getInstanceId = "+xsource.getInstanceId());
-							filters = chartService.getFilterOfService(xsource.getServiceId(), xsource.getUserid());
+							//filters = chartService.getFilterOfService(xsource.getServiceId(), xsource.getUserid());
+							filters = chartService.getFilterOfService(xsource.getServiceId(), xsource.getUserid(), xsource.getInstanceId());
 							// }catch(Exception e){
 							// filters = new ArrayList<FilterM>();
 							// System.out.println(" Exception FilterResource sname FILTER_GET_FILTER_SERVICE

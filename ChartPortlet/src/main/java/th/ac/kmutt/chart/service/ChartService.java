@@ -137,6 +137,7 @@ public interface ChartService {
 	public FilterInstanceM getFilterInstance(FilterInstanceM obj); // get Filter instance
 	public List<FilterInstanceM> getFilterInstanceWithItem(FilterInstanceM obj); // get filter instance with item
 	public List<FilterM> getFilterService(FilterM obj);
+	public List<FilterM> getFilterService(FilterM obj, String instanceId);
 	public List<ChartFilterInstanceM> getChartFilterInstance(ChartFilterInstanceM obj);
 
 	//cascade

@@ -904,7 +904,7 @@ public class ChartRepository {
 		return feList;
 	}
 	
-	public  List<FilterParamM> fetchGlobalFilter_v2(){
+	public  List<FilterParamM> fetchGlobalFilter_v2(String instanceId){
 		//logger.info(":: Msg --Start--> Fetch global filter By Instance");
 		
 		String sql = "SELECT F.FILTER_ID, FILTER_NAME, TITLE, VALUE_TYPE,\n" + 
@@ -923,10 +923,12 @@ public class ChartRepository {
 				"	FROM FILTER_MAPPING FM\n" + 
 				"	INNER JOIN FILTER F ON F.FILTER_ID = FM.PARAM_FILTER_ID\n" + 
 				")PR ON PR.MAIN_FILTER_ID = F.FILTER_ID\n" + 
-				"WHERE F.GLOBAL_FLAG = 1 \n" +
+				"INNER JOIN FILTER_INSTANCE FI ON FI.FILTER_ID = F.FILTER_ID\n" + 
+				"WHERE F.GLOBAL_FLAG = 1 \n" + 
+				"AND FI.INSTANCE_ID = :instanceId \n" + 
 				"ORDER BY F.FILTER_ID";
 		
-		Query q = entityManager.createNativeQuery(sql);
+		Query q = entityManager.createNativeQuery(sql).setParameter("instanceId", instanceId);
 		List<Object[]> results = q.getResultList();
 		
 		List<FilterParamM> filters = new ArrayList<FilterParamM>();

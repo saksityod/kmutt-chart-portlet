@@ -142,7 +142,8 @@ public interface ChartService {
 	public FilterInstanceM getFilterInstance(FilterInstanceM fim);
 	public List<FilterInstanceM> getFilterInstanceWithItem(String instanceId); 
 	public List<FilterM> getGlobalFilter();	
-	public List<FilterM> getFilterOfService(Integer serviceId,String userId) ;	
+	public List<FilterM> getFilterOfService(Integer serviceId,String userId) ;
+	public List<FilterM> getFilterOfService(Integer serviceId,String userId, String instanceId) ;	
 	public List<ChartFilterInstanceM> getChartFilterInstance(ChartFilterInstanceM chartFilterInstance);
 	public FilterInstanceM saveFilterInstance(FilterInstanceM fim);
 	public Integer deleteFilterInstance(String instanceId);

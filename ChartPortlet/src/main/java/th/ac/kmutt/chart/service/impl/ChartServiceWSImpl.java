@@ -883,10 +883,26 @@ public class ChartServiceWSImpl extends PostCommon implements ChartService {
 		return filters;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<FilterM> getFilterService(FilterM obj) {
 		List<FilterM> filters = new ArrayList<FilterM>();
 		obj.setServiceName(ServiceConstant.FILTER_GET_FILTER_SERVICE);
+		//obj.setInstanceId(instanceId);
+		ImakeResultMessage imakeMessage = postMessage(obj, obj.getClass().getName(), "filter", true);
+		 if (imakeMessage.getResultListObj() != null && imakeMessage.getResultListObj().size() > 0){
+			 filters =    imakeMessage.getResultListObj();
+		 }
+		return filters;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<FilterM> getFilterService(FilterM obj, String instanceId) {
+		List<FilterM> filters = new ArrayList<FilterM>();
+		obj.setServiceName(ServiceConstant.FILTER_GET_FILTER_SERVICE);
+		obj.setInstanceId(instanceId);
+		//obj.setInstanceId(instanceId);
 		ImakeResultMessage imakeMessage = postMessage(obj, obj.getClass().getName(), "filter", true);
 		 if (imakeMessage.getResultListObj() != null && imakeMessage.getResultListObj().size() > 0){
 			 filters =    imakeMessage.getResultListObj();
