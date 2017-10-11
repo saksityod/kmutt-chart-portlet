@@ -1,4 +1,6 @@
 package th.ac.kmutt.chart.repository;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,6 +18,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
+
+import com.google.gson.Gson;
 
 import th.ac.kmutt.chart.constant.DefaultConstant;
 import th.ac.kmutt.chart.constant.ServiceConstant;
@@ -43,6 +47,7 @@ import th.ac.kmutt.chart.model.ChartFilterInstanceM;
 import th.ac.kmutt.chart.model.ConnectionM;
 import th.ac.kmutt.chart.model.FilterInstanceM;
 import th.ac.kmutt.chart.model.FilterM;
+import th.ac.kmutt.chart.model.FilterParamM;
 import th.ac.kmutt.chart.model.FilterValueM;
 import th.ac.kmutt.chart.model.ServiceM;
 import th.ac.kmutt.chart.model.UserM;
@@ -890,12 +895,89 @@ public class ChartRepository {
 			return  new ArrayList<FilterValueM>();
 		}
 	}*/
+	
+	
 	public  List<FilterEntity> fetchGlobalFilter(){
 		String sql = "select * from FILTER where global_flag = '1'";
 		Query q = entityManager.createNativeQuery(sql,FilterEntity.class);
 		List<FilterEntity> feList = q.getResultList();
 		return feList;
 	}
+	
+	public  List<FilterParamM> fetchGlobalFilter_v2(){
+		//logger.info(":: Msg --Start--> Fetch global filter By Instance");
+		
+		String sql = "SELECT F.FILTER_ID, FILTER_NAME, TITLE, VALUE_TYPE,\n" + 
+				"	DATA_TYPE, SUBSTITUTE_DEFAULT, SQL_QUERY,\n" + 
+				"	SQL_FLAG, GLOBAL_FLAG, ACTIVE_FLAG,\n" + 
+				"	CONNECTION_ID, SYSTEM_FLAG, AUTO_FILL_FLAG,\n" + 
+				"    MAIN_FILTER_ID, PARAM_FILTER_ID, PARAM_FILTER_NAME,\n" + 
+				"    PARAM_VALUE_TYPE, PARAM_SELECT_VAL\n" + 
+				"FROM FILTER F\n" + 
+				"LEFT OUTER JOIN(\n" + 
+				"	SELECT FM.FILTER_ID MAIN_FILTER_ID,\n" + 
+				"		FM.PARAM_FILTER_ID PARAM_FILTER_ID,\n" + 
+				"		F.FILTER_NAME PARAM_FILTER_NAME,\n" + 
+				"        F.VALUE_TYPE PARAM_VALUE_TYPE,\n" + 
+				"        F.SUBSTITUTE_DEFAULT PARAM_SELECT_VAL\n" + 
+				"	FROM FILTER_MAPPING FM\n" + 
+				"	INNER JOIN FILTER F ON F.FILTER_ID = FM.PARAM_FILTER_ID\n" + 
+				")PR ON PR.MAIN_FILTER_ID = F.FILTER_ID\n" + 
+				"WHERE F.GLOBAL_FLAG = 1 \n" +
+				"ORDER BY F.FILTER_ID";
+		
+		Query q = entityManager.createNativeQuery(sql);
+		List<Object[]> results = q.getResultList();
+		
+		List<FilterParamM> filters = new ArrayList<FilterParamM>();
+		
+		for(Object[] result : results){
+			//logger.info(":: Msg --Start----> Fetch result into model @FileterId-"+result[0].toString());
+			FilterParamM filter = new FilterParamM();
+			
+			filter.setFilterId((Integer)result[0]);
+			filter.setFilterName((String)result[1]);
+			filter.setTitle((String)result[2]);
+			filter.setValueType((String) result[3]);
+			
+			filter.setDataType((String) result[4]);
+			filter.setSelectedValue((String) result[5]);
+			filter.setSqlQuery((String) result[6]);
+			
+			filter.setSqlFlag(result[7].toString());
+			filter.setGlobalFlag((String) result[8]);
+			filter.setActiveFlag((String) result[9]);
+			
+			filter.setConnId((result[10] == null) ? null : Integer.parseInt(result[10].toString()));
+			filter.setSystemFlag((String) result[11]);
+			filter.setAutoFill((String) result[12]);
+			
+			filter.setParamFilterId((result[14] == null) ? null : Integer.parseInt(result[14].toString()));
+			filter.setParamFilterName((String) result[15]);
+			filter.setParamValueType((String) result[16]);
+			filter.setParamSelectedValue((String) result[17]);
+			
+			filters.add(filter);
+		}
+		
+		/* Print result into text file for test
+		 * Gson gson = new Gson();
+		StringBuilder sb = new StringBuilder();
+		for(FilterParamM d : filters) {
+			sb.append(gson.toJson(d));
+		}
+		try (FileWriter file = new FileWriter("/home/portal/logs/fetchGlobalFilter_v2.txt")) {
+			file.write(sb.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}*/
+		
+		//logger.info(":: Msg --Finish--> Fetch global filter By Instance");
+		
+		return filters;
+	}
+	
+	
 	public List<Object[]> fetchFilterOfService(Integer serviceId,List<FilterM>globalFilter,String userId) {
 			String sql = "SELECT f.filter_id,filter_name,title,SUBSTITUTE_DEFAULT,f.SQL_QUERY,f.auto_fill_flag,f.CONNECTION_ID FROM SERVICE_FILTER_MAPPING sfm "
 					+ " left join FILTER f on sfm.filter_id = f.filter_id  "

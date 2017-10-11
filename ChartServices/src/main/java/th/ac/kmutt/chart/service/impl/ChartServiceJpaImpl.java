@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.Gson;
+
 import th.ac.kmutt.chart.builder.*;
 import th.ac.kmutt.chart.constant.ServiceConstant;
 import th.ac.kmutt.chart.domain.*;
@@ -18,9 +20,14 @@ import th.ac.kmutt.chart.repository.ChartRepository;
 import th.ac.kmutt.chart.repository.DatasourceRepository;
 import th.ac.kmutt.chart.service.ChartService;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 @Service("chartServiceJpaImpl")
 public class ChartServiceJpaImpl implements ChartService {
@@ -464,21 +471,35 @@ public class ChartServiceJpaImpl implements ChartService {
     
     public List<FilterM> getGlobalFilter(){
 		List<FilterM> filters = new ArrayList<FilterM>();
-    	List<FilterEntity> feList = chartRepository.fetchGlobalFilter();
+    	List<FilterEntity> feList = chartRepository.fetchGlobalFilter(); 
 		for(FilterEntity fe : feList){
 			FilterM fm = new FilterM();
 			BeanUtils.copyProperties(fe, fm); // source.target
-			//System.out.println("global value=>"+fm.getValueType());
+			
 			//filterValue
-			List<FilterM> paramFilter = chartRepository.findParamFilterMapping(fm.getFilterId());
-			//DatasourceConnectionEntity dc = null;
-			List<FilterValueM> fvs = datasourceRepository.fetchFilterValueCascade( fe,paramFilter);
+			List<FilterM> paramFilter = chartRepository.findParamFilterMapping(fm.getFilterId());			
+			List<FilterValueM> fvs = datasourceRepository.fetchFilterValueCascade(fe, paramFilter);			
 			fm.setFilterValues(fvs);
+			
 			//into list
 			filters.add(fm);
-		}
+		}		
 		return filters;
     }
+    
+    
+    public List<FilterM> getGlobalFilter_v2(){
+    	logger.info(":: Msg --Start--> Get global filter");
+    	
+    	List<FilterParamM> filterParamMs = chartRepository.fetchGlobalFilter_v2();
+    	List<FilterM> filters = datasourceRepository.fetchFilterValueCascade_v2(filterParamMs);
+    	
+    	logger.info(":: Msg --Fnish--> Get global filter");
+    	
+    	return filters;
+    }
+    
+    
     @SuppressWarnings("unchecked")
 	public FusionChartM buildChartObject(FusionChartM source){
     	ChartInstanceEntity chartInsEnt = chartRepository.findChartInstanceEntityById(source.getInstanceId());
@@ -699,6 +720,8 @@ public class ChartServiceJpaImpl implements ChartService {
     	}//check exist
     	return source;
     }
+    
+    
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	public List convertDataJsonToList(String jsonString){
     	List  dataList = new ArrayList<Object[]>();
@@ -756,45 +779,52 @@ public class ChartServiceJpaImpl implements ChartService {
 		return fins;
    
     }
-    public List<FilterM> getFilterOfService(Integer serviceId,String userId) {
-    	List<FilterM> globalFilter = getGlobalFilter();
-    	List<FilterM> filters = new ArrayList<FilterM>();
-	    	List<Object[]> results = chartRepository.fetchFilterOfService(serviceId,globalFilter,userId);
-	    	for(Object[] result : results){
 
-				FilterM filter = new FilterM();
-				filter.setFilterId( (Integer)result[0]); 
-				filter.setFilterName((String)result[1]);
-				filter.setTitle((String)result[2]);
-				filter.setSelectedValue((String)result[3]);
-				filter.setSqlQuery((String)result[4]);
-				filter.setAutoFill((String)result[5]);
-				filter.setConnId((Integer)result[6]);
-				//filterValue
-				List<FilterM> paramFilter = new ArrayList<FilterM>();
-				paramFilter.addAll(globalFilter);
-				paramFilter.addAll(chartRepository.findParamFilterMapping(filter.getFilterId()));
-				//replace sys filter
-				String IdentifiyFilterAuthen = chartRepository.getConstant("authen");
-				for( FilterM lookup : paramFilter ){
-					if(IdentifiyFilterAuthen.equalsIgnoreCase(lookup.getFilterName())){
-						lookup.setSelectedValue(userId);
-					}
-					//System.out.println("#:lookup.getFilterName():  " +lookup.getFilterName()+"  " + lookup.getSelectedValue() + " d:"+lookup.getDefaultValue() );
+    
+	public List<FilterM> getFilterOfService(Integer serviceId, String userId) {
+		List<FilterM> globalFilter = getGlobalFilter_v2(); //getGlobalFilter();
+
+		List<FilterM> filters = new ArrayList<FilterM>();
+		List<Object[]> results = chartRepository.fetchFilterOfService(serviceId, globalFilter, userId);
+		for (Object[] result : results) {
+
+			FilterM filter = new FilterM();
+			filter.setFilterId((Integer) result[0]);
+			filter.setFilterName((String) result[1]);
+			filter.setTitle((String) result[2]);
+			filter.setSelectedValue((String) result[3]);
+			filter.setSqlQuery((String) result[4]);
+			filter.setAutoFill((String) result[5]);
+			filter.setConnId((Integer) result[6]);
+			
+			// filterValue
+			List<FilterM> paramFilter = new ArrayList<FilterM>();
+			paramFilter.addAll(globalFilter);
+			paramFilter.addAll(chartRepository.findParamFilterMapping(filter.getFilterId()));
+			// replace sys filter
+			String IdentifiyFilterAuthen = chartRepository.getConstant("authen");
+			for (FilterM lookup : paramFilter) {
+				if (IdentifiyFilterAuthen.equalsIgnoreCase(lookup.getFilterName())) {
+					lookup.setSelectedValue(userId);
 				}
-				FilterEntity fe = new FilterEntity();
-				BeanUtils.copyProperties(filter, fe);
-				List<FilterValueM> fvs = datasourceRepository.fetchFilterValueCascade(fe,paramFilter);
-				filter.setFilterValues(fvs);
-				
-				if( filter.getAutoFill().equals("1") && fvs.size()>0  ){
-						filter.setSelectedValue(fvs.get(0).getValueMapping());
-				}
-				// add filters
-				filters.add(filter);
 			}
-			return filters;
-    }
+			FilterEntity fe = new FilterEntity();
+			BeanUtils.copyProperties(filter, fe);
+			List<FilterValueM> fvs = datasourceRepository.fetchFilterValueCascade(fe, paramFilter);
+			filter.setFilterValues(fvs);
+
+			if (filter.getAutoFill().equals("1") && fvs.size() > 0) {
+				filter.setSelectedValue(fvs.get(0).getValueMapping());
+			}
+			// add filters
+			filters.add(filter);
+		}
+		return filters;
+	}
+	
+	
+	
+	
     public List<ChartFilterInstanceM> getChartFilterInstance(ChartFilterInstanceM chartFilterInstance){
     	List<ChartFilterInstanceM> cfi = new ArrayList<ChartFilterInstanceM>();
     	

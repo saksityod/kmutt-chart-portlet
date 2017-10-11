@@ -1,5 +1,7 @@
 package th.ac.kmutt.chart.repository;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,13 +13,18 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
 import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.exception.SQLGrammarException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.google.gson.Gson;
 
 import th.ac.kmutt.chart.constant.DefaultConstant;
 import th.ac.kmutt.chart.constant.ServiceConstant;
@@ -26,6 +33,7 @@ import th.ac.kmutt.chart.domain.FilterEntity;
 import th.ac.kmutt.chart.domain.ServiceEntity;
 import th.ac.kmutt.chart.exception.DsException;
 import th.ac.kmutt.chart.model.FilterM;
+import th.ac.kmutt.chart.model.FilterParamM;
 import th.ac.kmutt.chart.model.FilterValueM;
 import th.ac.kmutt.chart.rest.application.SystemSetting;
 
@@ -128,7 +136,8 @@ public class DatasourceRepository {
 		}
 		return results;
 	}
-	private Object transformSelectedValueToObject(String type,String valueString){
+	
+	public Object transformSelectedValueToObject(String type,String valueString){
 		if(valueString!=null && type!=null){
 			if( type.equals(DefaultConstant.filterTypeList.get(0).toString() ) ){
 				//Manual Input
@@ -148,6 +157,7 @@ public class DatasourceRepository {
 			return valueString;
 		}
 	}
+	
 	public String transformSelectedValue(String type,String valueString){
 		if(valueString!=null && type!=null){
 		
@@ -165,17 +175,23 @@ public class DatasourceRepository {
 		}
 		return valueString;
 	}
+	
+	
 	public List<FilterValueM> fetchFilterValueCascade(FilterEntity fe,List<FilterM> filters)  {
 		try{
 			// normal filter
-			logger.debug("fetch filter value cascade "+fe.getFilterId()+":"+fe.getFilterName());
+			//logger.info("fetch filter value cascade "+fe.getFilterId()+":"+fe.getFilterName());
 		 	EntityManager em = connectDS(fe.getConnId()); 
 			Query query = em.createNativeQuery(fe.getSqlQuery());
 			for( FilterM filter : filters ){
-				Object value = transformSelectedValueToObject(filter.getValueType(),filter.getSelectedValue());	
+				
+				// Get parameter values
+				Object value = transformSelectedValueToObject(filter.getValueType(),filter.getSelectedValue());
+				
 				if(  fe.getSqlQuery().contains(":"+filter.getFilterName()) && !filter.getFilterId().equals(fe.getFilterId()) ){ 
 					query.setParameter(filter.getFilterName(),value);
 				}
+				
 			}
 			List<Object[]> results = query.getResultList();
 			List<FilterValueM> fvs = new ArrayList<FilterValueM>();
@@ -184,7 +200,7 @@ public class DatasourceRepository {
 				fvs.add(buildFilterItems(result));
 			}
 			//em.clear();
-			logger.debug("return result filter value cascade "+fe.getFilterId()+":"+fe.getFilterName());
+			//logger.info("return result filter value cascade "+fe.getFilterId()+":"+fe.getFilterName());			
 			return fvs;
 			//return null;
 	  }catch(Exception ex){
@@ -195,7 +211,50 @@ public class DatasourceRepository {
 			return null;
 	  }
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<FilterM> fetchFilterValueCascade_v2(List<FilterParamM> paramMs) {
+		logger.info(":: Msg --Start--> Fetch filter value cascade v2");
+		List<FilterM> filters = new ArrayList<FilterM>();
+		
+		try{
+			for (FilterParamM paramM : paramMs) {
+				// Model Mapping (FilterParamM : FilterM)
+				FilterM filter = new FilterM();				
+				EntityManager em = connectDS(paramM.getConnId());
+				Object value = transformSelectedValueToObject(paramM.getParamValueType(),paramM.getParamSelectedValue());
+				Query query = em.createNativeQuery(paramM.getSqlQuery());
+				
+				if (paramM.getParamFilterId() != null) {
+					query.setParameter(paramM.getParamFilterName(), value);
+				}
+				
+				List<Object[]> results = query.getResultList();
+				List<FilterValueM> fvs = new ArrayList<FilterValueM>();
+				
+				for(Object[] result : results){
+					fvs.add(buildFilterItems(result));
+				}
+				
+				BeanUtils.copyProperties(paramM, filter);
+				
+				filter.setFilterValues(fvs);
+				
+				filters.add(filter);
+			}
+			
+			logger.info(":: Msg --Finish--> Fetch filter value cascade v2");
+			return filters;
+		}catch(Exception ex){
+			logger.error(" Break filterValue reason="+ex);
+			//return  new ArrayList<FilterValueM>();
+			ex.printStackTrace();
+			return null;
+		}
+	}
 
+	
 	public FilterValueM buildFilterItems(Object[] rf){
 		FilterValueM fv = new FilterValueM();
 		if(rf.length==1){
