@@ -1039,7 +1039,10 @@ public class ChartRepository {
 		}*/
 		return successNo;
 	}
-	public List<FilterM> findParamFilterMapping(Integer filterId){
+	
+	
+	
+	/*public List<FilterM> findParamFilterMapping(Integer filterId){
 			try{
 			String sql = "SELECT f.FILTER_ID,f.FILTER_NAME,f.VALUE_TYPE,f.SUBSTITUTE_DEFAULT,f.CONNECTION_ID FROM FILTER_MAPPING fm "
 					+ " left join FILTER f on fm.param_filter_id = f.filter_id "
@@ -1060,7 +1063,31 @@ public class ChartRepository {
 		}catch(Exception e){
 			return new ArrayList<FilterM>();
 		}
+	}*/
+	public List<FilterM> findParamFilterMapping(Integer filterId) {
+		try {
+			String sql = "SELECT f.FILTER_ID,f.FILTER_NAME,f.VALUE_TYPE,f.SUBSTITUTE_DEFAULT,f.CONNECTION_ID FROM FILTER_MAPPING fm "
+					+ " left join FILTER f on fm.param_filter_id = f.filter_id where f.filter_id = " + filterId;
+			Query query = entityManager.createNativeQuery(sql);
+			List<Object[]> results = query.getResultList();
+			List<FilterM> filters = new ArrayList<FilterM>();
+			for (Object[] result : results) {
+				FilterM filter = new FilterM();
+				filter.setFilterId((Integer) result[0]);
+				filter.setFilterName((String) result[1]);
+				filter.setValueType((String) result[2]);
+				filter.setSelectedValue((String) result[3]);
+				filter.setConnId((Integer) result[4]);
+				filters.add(filter);
+			}
+			return filters;
+		} catch (Exception e) {
+			return new ArrayList<FilterM>();
+		}
 	}
+	
+	
+	
 	public List<FilterM> findFilterByParamMapping(Integer filterId){
 		String sql = "SELECT f.FILTER_ID,f.FILTER_NAME,f.SUBSTITUTE_DEFAULT,f.SQL_QUERY,f.CONNECTION_ID "
 				+ " FROM FILTER_MAPPING fm "

@@ -489,12 +489,9 @@ public class ChartServiceJpaImpl implements ChartService {
     
     
     public List<FilterM> getGlobalFilter_v2(String instanceId){
-    	logger.info(":: Msg --Start--> Get global filter");
     	
     	List<FilterParamM> filterParamMs = chartRepository.fetchGlobalFilter_v2(instanceId);
     	List<FilterM> filters = datasourceRepository.fetchFilterValueCascade_v2(filterParamMs);
-    	
-    	logger.info(":: Msg --Fnish--> Get global filter");
     	
     	return filters;
     }
@@ -747,6 +744,9 @@ public class ChartServiceJpaImpl implements ChartService {
 		}
     	return dataList;
     }
+    
+    
+    
     public List<FilterInstanceM> getFilterInstanceWithItem(String instanceId){
     	//** filterInstaance  ins 1 with n filter
     	List<FilterInstanceM> fins = new ArrayList<FilterInstanceM>();
@@ -776,10 +776,11 @@ public class ChartServiceJpaImpl implements ChartService {
 		}
      	fin.setFilterList(filters);
      	fins.add(fin);
-		return fins;
-   
+     	
+		return fins;   
     }
 
+    
     
 	public List<FilterM> getFilterOfService(Integer serviceId, String userId) {
 		List<FilterM> globalFilter = getGlobalFilter();
@@ -825,8 +826,9 @@ public class ChartServiceJpaImpl implements ChartService {
 	
 	
 	public List<FilterM> getFilterOfService(Integer serviceId, String userId, String instanceId) {
+		
 		List<FilterM> globalFilter = getGlobalFilter_v2(instanceId);
-
+		
 		List<FilterM> filters = new ArrayList<FilterM>();
 		List<Object[]> results = chartRepository.fetchFilterOfService(serviceId, globalFilter, userId);
 		for (Object[] result : results) {
@@ -844,6 +846,7 @@ public class ChartServiceJpaImpl implements ChartService {
 			List<FilterM> paramFilter = new ArrayList<FilterM>();
 			paramFilter.addAll(globalFilter);
 			paramFilter.addAll(chartRepository.findParamFilterMapping(filter.getFilterId()));
+			
 			// replace sys filter
 			String IdentifiyFilterAuthen = chartRepository.getConstant("authen");
 			for (FilterM lookup : paramFilter) {
@@ -851,6 +854,7 @@ public class ChartServiceJpaImpl implements ChartService {
 					lookup.setSelectedValue(userId);
 				}
 			}
+			
 			FilterEntity fe = new FilterEntity();
 			BeanUtils.copyProperties(filter, fe);
 			List<FilterValueM> fvs = datasourceRepository.fetchFilterValueCascade(fe, paramFilter);

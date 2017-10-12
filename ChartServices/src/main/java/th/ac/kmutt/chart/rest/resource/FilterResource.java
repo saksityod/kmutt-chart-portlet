@@ -181,7 +181,7 @@ public class FilterResource extends BaseResource {
 						} else if (serviceName.equals(ServiceConstant.FILTER_GET_FILTER_SERVICE)) {
 							List<FilterM> filters = null;
 							// try{
-							logger.info(":: Msg ===>> getInstanceId = "+xsource.getInstanceId());
+							logger.info(":: Msg =Start==>> getInstanceId = "+xsource.getInstanceId());
 							//filters = chartService.getFilterOfService(xsource.getServiceId(), xsource.getUserid());
 							filters = chartService.getFilterOfService(xsource.getServiceId(), xsource.getUserid(), xsource.getInstanceId());
 							// }catch(Exception e){
@@ -191,6 +191,7 @@ public class FilterResource extends BaseResource {
 							// }
 							ImakeResultMessage imakeMessage = new ImakeResultMessage();
 							imakeMessage.setResultListObj(filters);
+							logger.info(":: Msg =Finish==>> getInstanceId = "+xsource.getInstanceId());
 							return getRepresentation(entity, imakeMessage, xstream);
 						} else if (serviceName.equals(ServiceConstant.PARAM_DETAIL)) {
 							FilterM filter = chartService.getFilterWithParam(xsource.getFilterId());

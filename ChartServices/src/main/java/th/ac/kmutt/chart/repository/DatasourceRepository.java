@@ -200,7 +200,18 @@ public class DatasourceRepository {
 				fvs.add(buildFilterItems(result));
 			}
 			//em.clear();
-			//logger.info("return result filter value cascade "+fe.getFilterId()+":"+fe.getFilterName());			
+			//logger.info("return result filter value cascade "+fe.getFilterId()+":"+fe.getFilterName());
+			Gson gson = new Gson();
+			StringBuilder sb = new StringBuilder();
+			for(FilterValueM d : fvs) {
+				sb.append(gson.toJson(d));
+			}
+			try (FileWriter file = new FileWriter("/home/portal/logs/fetchFilterValueCascade-filter.txt")) {
+				file.write(sb.toString());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
 			return fvs;
 			//return null;
 	  }catch(Exception ex){
