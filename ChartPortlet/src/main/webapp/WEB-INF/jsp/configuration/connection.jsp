@@ -25,48 +25,48 @@
 <!-- include data table end -->
 
 <style type="text/css">
-	.errorMessage{ color:red;}
+	#web_${ns} .errorMessage{ color:red;}
 	
-	.aui .form-horizontal .control-group{
+	.aui #web_${ns} .form-horizontal .control-group{
 		margin-bottom: 0;
 	}
-	.portlet-content {
+	#web_${ns} .portlet-content {
     background: rgba(0, 0, 0, 0) linear-gradient(to bottom, #fff 0px, #f6f6f6 47%, #ededed 100%) repeat scroll 0 0;
     border-radius: 0;
     margin-bottom: 0;
 	}
-	.aui .form-horizontal .control-label{
+	.aui #web_${ns} .form-horizontal .control-label{
 	 width: 140px;
 	 text-align: left;
 	 font-weight:bold;
 	}
 	
 	
-	.aui .form-horizontal .controls {
+	.aui #web_${ns} .form-horizontal .controls {
 	    margin-left: 143px;
 	}
-	.aui .portlet-content, .aui .portlet-minimized .portlet-content-container{
+	.aui #web_${ns} .portlet-content, .aui .portlet-minimized .portlet-content-container{
 		padding: 15px 15px 15px 15px;
 	}
 	
-	.labelConnection{
+	#web_${ns} .labelConnection{
 		width:160px;
 		float:left;
 		padding-top:5px;
 		font-weight:bold;
 	}
 	
-	.inputFormConnection{
+	#web_${ns} .inputFormConnection{
 		/*width:300px;*/
 		float:left;
 		padding-top:5px;
 	}
 	
-	.aui label {
+	#web_${ns} .aui label {
     font-weight:bold;
 	}
 	
-	.aui .btn {
+	#web_${ns} .aui .btn {
 		font-size: 14px;
 	 	padding: 4px 12px; 
 		width: auto;
@@ -78,7 +78,7 @@
  @media (min-width: 1200px) { 
  
 	
-	.areaBtn{
+	#web_${ns} .areaBtn{
 		padding-left:160px;
 	}
 	 
@@ -88,10 +88,10 @@
   /*  desktop Start#########################################*/
  @media (min-width: 980px) and (max-width: 1199px) {
  
- 	.labelConnection{
+ 	#web_${ns} .labelConnection{
 		width:100%;
 	}
-	.areaBtn{
+	#web_${ns} .areaBtn{
 		padding-left:0px;
 	}
  	
@@ -101,7 +101,7 @@
  /* Portrait tablet to landscape and desktop Start##########*/
  @media (min-width: 768px) and (max-width: 979px) {
  
-	.labelConnection{
+	#web_${ns} .labelConnection{
 		width:100%;
 	}
 
@@ -111,7 +111,7 @@
  /* Landscape phone to portrait tablet Start################*/
  @media (max-width: 767px) { 
  	
- 	.labelConnection{
+ 	#web_${ns} .labelConnection{
 		width:100%;
 	}
  
@@ -121,7 +121,7 @@
  /* Landscape phones and down Start#########################*/
  @media (max-width: 480px) { 
  	
- 	.labelConnection{
+ 	#web_${ns} .labelConnection{
 		width:100%;
 	}
  
@@ -140,8 +140,8 @@ $( document ).ajaxStop(function() {
 });
 
 	function connNew(){
-		//console.log(checkDataDuplicateFn($("#web_${ns} #connId option").get(),$("#web_${ns} #connName").val()));
-		if(checkDataDuplicateFn($("#web_${ns} #connId option").get(),$("#web_${ns} #connName").val())){
+		//console.log(checkDataDuplicateConnFn($("#web_${ns} #connId option").get(),$("#web_${ns} #connName").val()));
+		if(checkDataDuplicateConnFn($("#web_${ns} #connId option").get(),$("#web_${ns} #connName").val())){
 			$("#web_${ns} #mode").val("add");
 			var result = confirm("Do you want to save as this connection ?");
 			if (!result) {
@@ -232,7 +232,7 @@ $( document ).ajaxStop(function() {
     	
          
 }
-	var checkDataDuplicateFn = function(object,keyCheck){
+	var checkDataDuplicateConnFn = function(object,keyCheck){
 		var dataReturn=true;
 		$.each(object,function(index,indexEntry){
 			
@@ -246,9 +246,9 @@ $( document ).ajaxStop(function() {
 		
 	}
 	
-	var listDataTableFn = function(){
+	var listDataConnectionTableFn = function(){
 		
-		   
+		
 		var dataSourceListObject = $("#web_${ns} #connId option").get();
 		var dataSourceHTML="";
 		
@@ -324,6 +324,7 @@ $( document ).ajaxStop(function() {
 	
 	
 	$(document).ready(function(){
+		
 		var controlMessage = "${connectionForm.message}";
 		if(controlMessage.length>1){
 			alert(controlMessage);
@@ -331,7 +332,8 @@ $( document ).ajaxStop(function() {
 		
 		
 		//list data table start
-		listDataTableFn();
+		listDataConnectionTableFn();
+		
 		
 		 //add data source
 	    $("#web_${ns} #btnAddConnection").click(function(){
@@ -351,12 +353,12 @@ $( document ).ajaxStop(function() {
 <body >
 <div class='row-fluid'>
 	
-	<div class='span6 offset3'>
+	<div class='span8 offset2'>
 		<div id="web_${ns}" style='display:block;'>
 		
 		<!-- Modal Confirm Start -->
 
-<div aria-hidden="true" role="dialog" tabindex="-1" id="connectionModal" class="modal inmodal in large" style="display: none;">
+<div aria-hidden="true" role="dialog" tabindex="-1" id="connectionModal" class="modal inmodal in " style="display: none;">
     <div class="modal-dialog modal-lg">
     <div class="modal-content animated bounceInRight">
             <div class="modal-header ">
@@ -430,8 +432,8 @@ $( document ).ajaxStop(function() {
 					<thead>
 						<tr>
 							<!-- <th width="7%"><b>ID</b></th> -->
-							<th width="80%"><b>Connection Name</b></th>
-							<th width="20%" style='text-align:center;'><b >Manage</b></th>
+							<th width="70%"><b>Connection Name</b></th>
+							<th width="30%" style='text-align:center;'><b >Manage</b></th>
 							
 						</tr>
 					</thead>

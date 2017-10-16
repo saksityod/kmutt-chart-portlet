@@ -67,43 +67,43 @@
 	#web_${ns} .chart_param select{ height:250px;width:457px;overflow-x:scroll}
 	.selection_div>div{ display:inline-block;}
 	.errorMessage{ color:red;}
-	.portlet-content {
+	#web_${ns} .portlet-content {
     background: rgba(0, 0, 0, 0) linear-gradient(to top, #fff 0px, #f6f6f6 47%, #ededed 100%) repeat scroll 0 0;
     border-radius: 0;
     margin-bottom: 0;
 	}
-	.formChartDataSource{
+	#web_${ns} .formChartDataSource{
 	 background: rgba(0, 0, 0, 0) linear-gradient(to top, #fff 0px, #f6f6f6 47%, #ededed 100%) repeat scroll 0 0;
 	 border-radius: 0;
 	 margin-bottom: 0;
 	}
-	.modal-header{
+	#web_${ns} .modal-header{
 		background-color: #f5f5f5;
 	    border-radius: 0 0 6px 6px;
 	    border-top: 1px solid #ddd;
 	    box-shadow: 0 1px 0 white inset;
 	   
 	}
-	.labelChartDataSource{
+	#web_${ns} .labelChartDataSource{
 		width:160px;
 		float:left;
 		padding-top:5px;
 		font-weight:bold;
 	}
 	
-	.inputFormChartDataSource{
+	#web_${ns} .inputFormChartDataSource{
 		/*width:300px;*/
 		float:left;
 		padding-top:5px;
 	}
-	.aui .portlet-content, .aui .portlet-minimized .portlet-content-container{
+	.aui #web_${ns} .portlet-content, .aui .portlet-minimized .portlet-content-container{
 		padding: 15px 15px 15px 15px;
 	}
-	.aui label{
+	.aui #web_${ns} label{
 		font-weight:bold;
 	}
 	
-	.aui .btn {
+	.aui #web_${ns} .btn {
 		font-size: 14px;
 	 	padding: 4px 12px; 
 		width: auto;
@@ -111,7 +111,7 @@
 		display: inline;
 	}
 	
-	.aui .tableDataSource_wrapper select{
+	.aui #web_${ns} .tableDataSource_wrapper select{
 		width: 60px;
 	}
 	
@@ -120,13 +120,13 @@
 	/* Large desktop Start#####################################*/
  @media (min-width: 1200px) { 
  
-	.modal.large {
+	#web_${ns} .modal.large {
 		    width: 90%;
 		    margin-left:-45%;  
 		    top:0px;
 		}
 		
-	.modal.medium {
+	#web_${ns} .modal.medium {
 		    width: 50%;
 		    margin-left:-25%;  
 		    top:0px;
@@ -139,13 +139,13 @@
   /*  desktop Start#########################################*/
  @media (min-width: 980px) and (max-width: 1199px) {
  
- 	.modal.large {
+ 	#web_${ns} .modal.large {
 		    width: 90%;
 		    margin-left:-45%;  
 		    top:0px;
 		}
 		
-		.modal.medium {
+		#web_${ns} .modal.medium {
 		    width: 50%;
 		    margin-left:-25%;  
 		    top:0px;
@@ -156,12 +156,12 @@
  
  /* Portrait tablet to landscape and desktop Start##########*/
  @media (min-width: 768px) and (max-width: 979px) {
- .modal.large {
+ #web_${ns} .modal.large {
 		    width: 90%;
 		    margin-left:-45%;  
 		    top:0px;
 		}
-	.modal.medium {
+	#web_${ns} .modal.medium {
 		    width: 50%;
 		    margin-left:-25%;  
 		    top:0px;
@@ -174,13 +174,13 @@
  /* Landscape phone to portrait tablet Start################*/
  @media (max-width: 767px) { 
  	
- .modal.large {
+#web_${ns}  .modal.large {
  	
 	    width: '';
 	    top:0px;    
 	}
 	
-	.modal.medium {
+	#web_${ns} .modal.medium {
 		   width: '';
 	   	   top:0px;  
 		}
@@ -203,7 +203,7 @@
 <script type="text/javascript">
 	
 	
-var checkDataDuplicateFn = function(object,keyCheck){
+var checkDataSourceDuplicateFn = function(object,keyCheck){
 	var dataReturn=true;
 	$.each(object,function(index,indexEntry){
 		
@@ -216,14 +216,14 @@ var checkDataDuplicateFn = function(object,keyCheck){
 	return dataReturn;
 	
 }
-var checkValidateFormFn = function(){
+var checkDataSourceValidateFormFn = function(){
 	var validate="";
 	//alert("check");
 	//datasourceName
 	//sqlString
 	//chartUsedList
 
-	if(!checkDataDuplicateFn($("#web_${ns} #datasourceId option").get(),$("#web_${ns} #datasourceName").val())){
+	if(!checkDataSourceDuplicateFn($("#web_${ns} #datasourceId option").get(),$("#web_${ns} #datasourceName").val())){
 		validate+="Datasource Name must be unique.\n";
 	}
 	if($("#web_${ns} #datasourceName").val()==""){
@@ -368,8 +368,8 @@ var checkValidateFormFn = function(){
 		
 		if(actionName=="new"){
 
-			if(checkValidateFormFn()!=""){
-				alert(checkValidateFormFn());
+			if(checkDataSourceValidateFormFn()!=""){
+				alert(checkDataSourceValidateFormFn());
 				return false;
 			}else{
 				var result = confirm(actionMessage);
@@ -381,8 +381,8 @@ var checkValidateFormFn = function(){
 			}
 		}else if(actionName=="update"){
 			
-			if(checkValidateFormFn()!=""){
-				alert(checkValidateFormFn());
+			if(checkDataSourceValidateFormFn()!=""){
+				alert(checkDataSourceValidateFormFn());
 				return false;
 			}else{
 				var result = confirm(actionMessage);
@@ -566,7 +566,7 @@ var checkValidateFormFn = function(){
 	    	
              
 	}
-	var listDataTableFn = function(){
+	var listDataSourceTableFn = function(){
 		
 		   
 		var dataSourceListObject = $("#web_${ns} #datasourceId option").get();
@@ -736,7 +736,7 @@ var checkValidateFormFn = function(){
  		
 	    
 	    //get data source for list data table
-	    listDataTableFn();
+	    listDataSourceTableFn();
 	    //binding data table start
 	 	
 	    $('#web_${ns} #tableDataSource').DataTable();
@@ -824,21 +824,21 @@ var checkValidateFormFn = function(){
 									 
 									 
 									
-									<label class='labelChartDataSource'>Datasource Name</label>
+									<label class='labelChartDataSource'><font color="red" style='font-size:16px; font-weight:bold;'>*</font> Datasource Name</label>
 									<form:input class='inputFormChartDataSource' id="datasourceName" style="min-width:70%" path="datasourceName"/>
 									<br style='clear:both'/>
 								</div>
 								<div class="chart_ds_data">
-									<label class='labelChartDataSource'>Database Connection</label>
+									<label class='labelChartDataSource'>&nbsp;&nbsp;Database Connection</label>
 									<form:select id="selectedConnId" class='inputFormChartDataSource' path="selectedConnId" items="${chartDatasourceForm.connections}" itemValue="connId" itemLabel="connName" multiple="false"></form:select>
 									<br style='clear:both'/>
-									<label class='labelChartDataSource'>Sql Query</label>
+									<label class='labelChartDataSource'><font color="red" style='font-size:16px; font-weight:bold;'>*</font> Sql Query</label>
 									<form:textarea id="sqlString" class='inputFormChartDataSource' style="min-width:80%;max-width:90%;" path="sqlString" rows="10" />
 									<br style='clear:both'/>
 									<p id="sqlMessage" class="errorMessage"></p>
 								</div>
 								<div>
-									<span class='labelChartDataSource'>Parameter</span>
+									<span class='labelChartDataSource'>&nbsp;&nbsp;Parameter</span>
 									<div class="chart_ds_param selection_div inputFormChartDataSource">
 										<div class="chart_ds_param_avaliable">
 											<form:select id="filterInitList" path="initialFilterList" items="${chartDatasourceForm.filterList}" itemValue="filterId" itemLabel="filterName" multiple="true"/>
@@ -856,7 +856,7 @@ var checkValidateFormFn = function(){
 									</div>
 									<br style='clear:both'>
 									
-									<span class='labelChartDataSource'>Chart Authority</span>
+									<span class='labelChartDataSource'>&nbsp;&nbsp;Chart Authority</span>
 									<div class="chart_param selection_div inputFormChartDataSource">
 										<div class="chart_param_avaliable">
 											<form:select id="chartInitList" path="chartInitList" items="${chartDatasourceForm.chartList}" itemValue="chartId" itemLabel="chartName" multiple="true"/>
@@ -874,7 +874,7 @@ var checkValidateFormFn = function(){
 									</div>
 									<br style='clear:both'>
 								</div>
-								<span class='labelChartDataSource'>User Authority</span>
+								<span class='labelChartDataSource'>&nbsp;&nbsp;User Authority</span>
 								<div class="userAuthority selection_div inputFormChartDataSource">
 									<div class="user_avaliable">
 										<form:select id="userInitList" path="userInitList" items="${chartDatasourceForm.userList}" itemValue="userId" itemLabel="username" multiple="true"/>
