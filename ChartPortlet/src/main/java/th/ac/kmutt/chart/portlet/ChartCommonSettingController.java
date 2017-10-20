@@ -341,4 +341,41 @@ public class ChartCommonSettingController {
 		json.put("header",header);
 		response.getWriter().write(json.toString());
     }
+    
+	@ResourceMapping(value = "findChartById")
+	@ResponseBody
+	public void findChartById(ResourceRequest request, ResourceResponse response) throws IOException {
+		HttpServletRequest httpReq = PortalUtil.getHttpServletRequest(request);
+		HttpServletRequest normalRequest = PortalUtil.getOriginalServletRequest(httpReq);
+		String chartType = normalRequest.getParameter("chartType");
+		com.liferay.portal.kernel.json.JSONObject json = JSONFactoryUtil.createJSONObject();
+		com.liferay.portal.kernel.json.JSONObject header = JSONFactoryUtil.createJSONObject();
+		com.liferay.portal.kernel.json.JSONArray datalist = JSONFactoryUtil.createJSONArray();
+		
+		try {
+			/*User currentUser = PortalUtil.getUser(request);
+			String userId = String.valueOf(currentUser.getScreenName());*/
+			
+			ChartM chartM = new ChartM();
+			chartM.setChartType(chartType);		
+			@SuppressWarnings("unchecked")
+			List<ChartM> chartMs = chartService.listChart(chartM);
+			for(ChartM s  : chartMs){
+				com.liferay.portal.kernel.json.JSONObject data = JSONFactoryUtil.createJSONObject();
+				data.put("chartType", s.getChartType());
+				data.put("dataJson", s.getDataJson());
+				datalist.put(data);
+			}			
+			
+			com.liferay.portal.kernel.json.JSONObject data = JSONFactoryUtil.createJSONObject();
+			data.put("data",datalist);
+			json.put("content", data);
+			header.put("success","1" );
+		}catch (Exception e) {
+			header.put("success", "0");
+		}
+		json.put("header", header);
+
+		response.getWriter().write(json.toString());
+	}
 }

@@ -72,17 +72,18 @@ public class GlobalFilterController {
 
     @RequestMapping("VIEW") 
     public String showFilter(PortletRequest request, Model model) {
-    	ThemeDisplay themeDisplay = (ThemeDisplay) request
-                .getAttribute(WebKeys.THEME_DISPLAY);
+    	ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         String instanceId=themeDisplay.getPortletDisplay().getInstanceId();
         PortletSession portletSession = request.getPortletSession();  
         portletSession.setAttribute("instanceId" , instanceId,PortletSession.PORTLET_SCOPE);
         GlobalFilterForm filterForm = null;
         if (model.containsAttribute("globalFilterForm")) {
+        	logger.info("If loop!! model.containsAttribute(\"globalFilterForm\")");
         	filterForm = (GlobalFilterForm) model.asMap().get("globalFilterForm");
         	if(filterForm.getMode()!=null ){
+        		logger.info("If loop!! getMode()!=null");
         		if(filterForm.getMode().equalsIgnoreCase("NEW")){ // from setting mode
-	        	
+        			logger.info("If loop!! getMode().equalsIgnoreCase(\"NEW\")");
 	            	filterForm = new GlobalFilterForm();
 	            	FilterInstanceM fim = new FilterInstanceM();
 	            	fim.setInstanceId(instanceId);
@@ -91,8 +92,9 @@ public class GlobalFilterController {
 	            		filterForm.setFilterList(fins.get(0).getFilterList());
 	            	}
         		}
-        	}// handle 
+        	}// handle
         } else {
+        	logger.info("else loop!! model.containsAttribute(\"globalFilterForm\")");
             filterForm = new GlobalFilterForm();
         	FilterInstanceM fim = new FilterInstanceM();
         	fim.setInstanceId(instanceId);
@@ -101,7 +103,7 @@ public class GlobalFilterController {
         		filterForm.setFilterList(fins.get(0).getFilterList());
         	}
         }
-        //
+        
         CommentM commentM = chartService.findCommentById(instanceId);
         if(commentM!=null)
         filterForm.setComment(commentM.getComment());
@@ -121,6 +123,7 @@ public class GlobalFilterController {
 //	        	}
 //        	} // have fins
 //        }
+        model.addAttribute("fromMode", filterForm.getMode());
         
         model.addAttribute("globalFilterForm",filterForm);
         model.addAttribute("textType",DefaultConstant.filterTypeList.get(0)); // input text
@@ -129,6 +132,8 @@ public class GlobalFilterController {
         return "filter/showFilter";
     }
 
+    
+    
     @RequestMapping(params = "action=doSubmit") // action phase
     public void doSubmit(javax.portlet.ActionRequest request, javax.portlet.ActionResponse response,
                              @ModelAttribute("globalFilterForm") GlobalFilterForm filterForm,
@@ -190,8 +195,11 @@ public class GlobalFilterController {
         //re show 
        //model.addAttribute("FilterMList", gFilters);
     }
+    
+    
+    
     @ResourceMapping(value="cascadeGlobalFilter")
-	@ResponseBody 
+	@ResponseBody
 	public void cascadeGlobalFilter(ResourceRequest request,ResourceResponse response) throws IOException{
     	//for cascade parameter
     	JSONObject json = JSONFactoryUtil.createJSONObject();
@@ -253,6 +261,9 @@ public class GlobalFilterController {
 	        portletSession.setAttribute("globalFilterForm" ,form,PortletSession.PORTLET_SCOPE);
 		}
     }
+    
+    
+    
     private List<FilterM> decriptCascadeString(String cascadeString,String causeFilterId){
     	 List<FilterM> filters = new ArrayList<FilterM>();
     	 // example string =  "filterId::filterValue||filterId::filterValue"
