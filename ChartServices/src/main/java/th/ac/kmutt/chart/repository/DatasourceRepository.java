@@ -49,12 +49,41 @@ public class DatasourceRepository {
     
     public EntityManager connectDS(Integer dsid) throws Exception{
    	try{
-    		if(!SystemSetting.existConnects()){
+   		//loadEm();
+   		EntityManager em = SystemSetting.getConnects(dsid.toString());
+   		logger.info("EntityManager ["+em+"]");	
+   		   //if(!SystemSetting.existConnects()){
+   		   if(em==null){
     			logger.info("load connection. . .");	
     			System.out.println("load connection. . .");
     			loadEm();
+    			//DatasourceConnectionEntity dsConfig = getConnectionById(dsid);
+    			//createEm(dsConfig);
+    			em = SystemSetting.getConnects(dsid.toString());
     		}
-    		EntityManager em = SystemSetting.getConnects(dsid.toString());
+   		   // validate query 
+   		   if(dsid==2){
+   			logger.info(" into validate Query connection. . .");
+   			Query query = em.createNativeQuery("SELECT 1 FROM sysibm.sysdummy1 ");
+   				try{
+   					query.getResultList();
+   				}catch(Exception e){
+   					logger.info(" Connection Lost ");	
+   					loadEm();
+   					em = SystemSetting.getConnects(dsid.toString());
+   				}
+   		   }
+   		logger.info(" Connection isOpen? ["+em.isOpen()+"]");	
+   		    if(!em.isOpen()){
+    			loadEm();
+    			//DatasourceConnectionEntity dsConfig = getConnectionById(dsid);
+    			//createEm(dsConfig);
+    			em = SystemSetting.getConnects(dsid.toString());
+    		}
+   		
+   		logger.info("size of connection ["+SystemSetting.sizeConnects()+"]");
+    	//EntityManager em = SystemSetting.getConnects(dsid.toString());
+    		
     		return em;
     	}catch(Exception e){
     		logger.error(" Exception datasourceRepo.connectDS  not found dsConfig at id [" +dsid+ "] reason="+e.getCause());
@@ -83,6 +112,12 @@ public class DatasourceRepository {
 		String sql = "select s from DatasourceConnectionEntity s";
 		Query q = entityManager.createQuery(sql, DatasourceConnectionEntity.class);
 		return q.getResultList();
+	}
+	public DatasourceConnectionEntity getConnectionById(Integer connId) throws Exception{
+		String sql = "select s from DatasourceConnectionEntity s where s.connId=:connId ";
+		Query q = entityManager.createQuery(sql, DatasourceConnectionEntity.class);
+		q.setParameter("connId", connId);
+		return (DatasourceConnectionEntity)q.getResultList().get(0);
 	}
     public void createEm(DatasourceConnectionEntity dsConfig){
     	String conName = dsConfig.getConnId().toString();
@@ -214,9 +249,10 @@ public class DatasourceRepository {
 			
 			return fvs;
 			//return null;
-	  }catch(Exception ex){
+		}catch(Exception ex){
 		  System.out.println(" break "+fe.getFilterId());
-			logger.error(" Break filterValue cascade : Exception  at filter id="+fe.getFilterId()+ "  reason="+ex);
+		  logger.error(" filter query error ="+fe.getSqlQuery());
+		  logger.error(" Break filterValue cascade : Exception  at filter id="+fe.getFilterId()+ ",connection id=["+fe.getConnId()+"] reason="+ex);
 			//return  new ArrayList<FilterValueM>();
 			ex.printStackTrace();
 			return null;

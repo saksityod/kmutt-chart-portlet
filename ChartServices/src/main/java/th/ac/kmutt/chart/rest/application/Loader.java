@@ -32,7 +32,8 @@ public class Loader {
 		loadConns();
 	}
 	private void loadConns(){
-		dataService.loadEm();
+		if(dataService!=null)
+			dataService.loadEm();
 	}
     private void loadConnsByUrl(){
     //    logger.info("ChartPortlet Loading Connections ...");

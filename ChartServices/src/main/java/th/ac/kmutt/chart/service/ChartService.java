@@ -5,15 +5,10 @@ import java.util.List;
 import org.springframework.dao.DataAccessException;
 
 import th.ac.kmutt.chart.domain.ChartEntity;
-import th.ac.kmutt.chart.domain.ChartFeatureEntity;
-import th.ac.kmutt.chart.domain.ChartFeatureInstanceEntity;
-import th.ac.kmutt.chart.domain.ChartFeatureMappingEntity;
-import th.ac.kmutt.chart.domain.ChartFeatureMappingEntityPK;
 import th.ac.kmutt.chart.domain.ChartFilterInstanceEntity;
 import th.ac.kmutt.chart.domain.ChartInstanceEntity;
 import th.ac.kmutt.chart.domain.CommentEntity;
 import th.ac.kmutt.chart.domain.DatasourceConnectionEntity;
-import th.ac.kmutt.chart.domain.FeatureEntity;
 import th.ac.kmutt.chart.domain.FilterEntity;
 import th.ac.kmutt.chart.domain.FilterInstanceEntity;
 import th.ac.kmutt.chart.domain.ServiceChartMappingEntity;
@@ -23,12 +18,9 @@ import th.ac.kmutt.chart.domain.ServiceFilterMappingEntity;
 import th.ac.kmutt.chart.domain.ServiceFilterMappingEntityPK;
 import th.ac.kmutt.chart.model.ChartFilterInstanceM;
 import th.ac.kmutt.chart.model.ChartM;
-import th.ac.kmutt.chart.model.ConnectionM;
-import th.ac.kmutt.chart.model.CopyrightServiceM;
 import th.ac.kmutt.chart.model.FilterInstanceM;
 import th.ac.kmutt.chart.model.FilterM;
 import th.ac.kmutt.chart.model.FusionChartM;
-import th.ac.kmutt.chart.model.InBoundOutBoundServiceM;
 import th.ac.kmutt.chart.model.ServiceM;
 import th.ac.kmutt.chart.model.UserM;
 
@@ -42,6 +34,7 @@ public interface ChartService {
     public ChartEntity findChartEntityById(Integer chartId) throws DataAccessException;
     public List listChartEntity(ChartM param)throws DataAccessException;
     //CHART_FEATURE
+    /*
     public Integer saveChartFeatureEntity(ChartFeatureEntity transientInstance) throws DataAccessException;
     public Integer updateChartFeatureEntity(ChartFeatureEntity transientInstance) throws DataAccessException;
     public Integer deleteChartFeatureEntity(ChartFeatureEntity persistentInstance) throws DataAccessException;
@@ -58,7 +51,7 @@ public interface ChartService {
     public Integer updateChartFeatureMappingEntity(ChartFeatureMappingEntity transientInstance) throws DataAccessException;
     public Integer deleteChartFeatureMappingEntity(ChartFeatureMappingEntity persistentInstance) throws DataAccessException;
     public ChartFeatureMappingEntity findChartFeatureMappingEntityById(ChartFeatureMappingEntityPK id) throws DataAccessException;
-
+    */
     //CHART_FILTER_INSTANCE
     public Integer saveChartFilterInstanceEntity(ChartFilterInstanceEntity transientInstance) throws DataAccessException;
     public Integer updateChartFilterInstanceEntity(ChartFilterInstanceEntity transientInstance) throws DataAccessException;
@@ -82,11 +75,12 @@ public interface ChartService {
 
     
     //FEATURE
+    /*
     public Integer saveFeatureEntity(FeatureEntity transientInstance) throws DataAccessException;
     public Integer updateFeatureEntity(FeatureEntity transientInstance) throws DataAccessException;
     public Integer deleteFeatureEntity(FeatureEntity persistentInstance) throws DataAccessException;
     public FeatureEntity findFeatureEntityById(Integer featureId) throws DataAccessException;
-
+	*/
     //FILTER
     public Integer saveFilterEntity(FilterEntity transientInstance) throws DataAccessException;
     public Integer updateFilterEntity(FilterEntity transientInstance) throws DataAccessException;

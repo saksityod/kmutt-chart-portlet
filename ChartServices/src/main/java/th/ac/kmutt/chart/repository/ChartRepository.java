@@ -1,38 +1,25 @@
 package th.ac.kmutt.chart.repository;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
-import org.apache.commons.lang3.StringUtils;
+
 import org.apache.log4j.Logger;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
-import com.google.gson.Gson;
-
 import th.ac.kmutt.chart.constant.DefaultConstant;
 import th.ac.kmutt.chart.constant.ServiceConstant;
 import th.ac.kmutt.chart.domain.ChartEntity;
-import th.ac.kmutt.chart.domain.ChartFeatureEntity;
-import th.ac.kmutt.chart.domain.ChartFeatureInstanceEntity;
-import th.ac.kmutt.chart.domain.ChartFeatureMappingEntity;
-import th.ac.kmutt.chart.domain.ChartFeatureMappingEntityPK;
 import th.ac.kmutt.chart.domain.ChartFilterInstanceEntity;
 import th.ac.kmutt.chart.domain.ChartInstanceEntity;
 import th.ac.kmutt.chart.domain.CommentEntity;
 import th.ac.kmutt.chart.domain.DatasourceConnectionEntity;
-import th.ac.kmutt.chart.domain.FeatureEntity;
 import th.ac.kmutt.chart.domain.FilterEntity;
 import th.ac.kmutt.chart.domain.FilterInstanceEntity;
 import th.ac.kmutt.chart.domain.FilterInstanceEntityPK;
@@ -44,11 +31,9 @@ import th.ac.kmutt.chart.domain.ServiceFilterMappingEntity;
 import th.ac.kmutt.chart.domain.ServiceFilterMappingEntityPK;
 import th.ac.kmutt.chart.domain.ServiceUserMappingEntity;
 import th.ac.kmutt.chart.model.ChartFilterInstanceM;
-import th.ac.kmutt.chart.model.ConnectionM;
 import th.ac.kmutt.chart.model.FilterInstanceM;
 import th.ac.kmutt.chart.model.FilterM;
 import th.ac.kmutt.chart.model.FilterParamM;
-import th.ac.kmutt.chart.model.FilterValueM;
 import th.ac.kmutt.chart.model.ServiceM;
 import th.ac.kmutt.chart.model.UserM;
 
@@ -208,6 +193,7 @@ public class ChartRepository {
     }
 
     //CHART_FEATURE
+    /*
     public Integer saveChartFeatureEntity(ChartFeatureEntity transientInstance) throws DataAccessException{
         entityManager.persist(transientInstance);
         return transientInstance.getChartId();
@@ -224,11 +210,15 @@ public class ChartRepository {
                 .executeUpdate();
         return deletedCount;
     }
+    */
+    /*
     public ChartFeatureEntity findChartFeatureEntityById(Integer chartId) throws DataAccessException{
         return entityManager.find(ChartFeatureEntity.class, chartId);
     }
+    */
 
     //CHART_FEATURE_INSTANCE
+    /*
     public Integer saveChartFeatureInstanceEntity(ChartFeatureInstanceEntity transientInstance) throws DataAccessException{
         entityManager.persist(transientInstance);
         return transientInstance.getChartId();
@@ -248,8 +238,9 @@ public class ChartRepository {
     public ChartFeatureInstanceEntity findChartFeatureInstanceEntityById(String instanceId) throws DataAccessException{
         return entityManager.find(ChartFeatureInstanceEntity.class, instanceId);
     }
-
+	*/
     //CHART_FEATURE_MAPPIG
+    /*
     public Integer saveChartFeatureMappingEntity(ChartFeatureMappingEntity transientInstance) throws DataAccessException{
         entityManager.persist(transientInstance);
         return transientInstance.getId().getChartId();
@@ -269,7 +260,7 @@ public class ChartRepository {
     public ChartFeatureMappingEntity findChartFeatureMappingEntityById(ChartFeatureMappingEntityPK id) throws DataAccessException{
         return entityManager.find(ChartFeatureMappingEntity.class, id);
     }
-
+	*/
     //CHART_FILTER_INSTANCE
     public Integer saveChartFilterInstanceEntity(ChartFilterInstanceEntity transientInstance) throws DataAccessException {
         entityManager.persist(transientInstance);
@@ -371,6 +362,7 @@ public class ChartRepository {
     }
 
     //FEATURE
+    /*
     public Integer saveFeatureEntity(FeatureEntity transientInstance) throws DataAccessException {
         entityManager.persist(transientInstance);
         return transientInstance.getFeatureId();
@@ -390,7 +382,7 @@ public class ChartRepository {
     public FeatureEntity findFeatureEntityById(Integer featureId) throws DataAccessException{
         return entityManager.find(FeatureEntity.class, featureId);
     }
-
+	*/
     //FILTER
     public Integer saveFilterEntity(FilterEntity transientInstance) throws DataAccessException {
     	entityManager.persist(transientInstance);

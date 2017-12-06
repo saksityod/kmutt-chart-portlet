@@ -1,6 +1,10 @@
 package th.ac.kmutt.chart.rest.resource;
 
-import org.apache.log4j.Logger;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.exception.ConstraintViolationException;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
@@ -8,19 +12,12 @@ import org.restlet.resource.ResourceException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+
 import th.ac.kmutt.chart.constant.ServiceConstant;
 import th.ac.kmutt.chart.domain.ChartEntity;
-import th.ac.kmutt.chart.domain.ChartFeatureInstanceEntity;
-import th.ac.kmutt.chart.domain.FilterEntity;
-import th.ac.kmutt.chart.model.*;
 import th.ac.kmutt.chart.model.ChartM;
 import th.ac.kmutt.chart.service.ChartService;
 import th.ac.kmutt.chart.xstream.common.ImakeResultMessage;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by imake on 20/10/2015.
@@ -188,12 +185,14 @@ public class ChartResource  extends BaseResource {
             BeanUtils.copyProperties(domain, model);
 
             // set ChartFeatureM
+            /*
             if (domain.getChartFeatureByChartId() != null) {
                 ChartFeatureM chartFeature = new ChartFeatureM();
                 BeanUtils.copyProperties(domain.getChartFeatureByChartId(), chartFeature);
                 chartFeature.setPaging(null);
                 model.setChartFeature(chartFeature);
             }
+            */
             model.setPaging(null);
             models.add(model);
         }

@@ -1,5 +1,8 @@
 package th.ac.kmutt.chart.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,24 +13,59 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
-import com.google.gson.Gson;
-
-import th.ac.kmutt.chart.builder.*;
+import th.ac.kmutt.chart.builder.Bar;
+import th.ac.kmutt.chart.builder.BoxAndWhisker2DTemporary;
+import th.ac.kmutt.chart.builder.Column2D;
+import th.ac.kmutt.chart.builder.Doughnut3D;
+import th.ac.kmutt.chart.builder.HorizontalBullet;
+import th.ac.kmutt.chart.builder.HorizontalLED;
+import th.ac.kmutt.chart.builder.HorizontalLinearGauge;
+import th.ac.kmutt.chart.builder.MultiSeries2DDualYCombination;
+import th.ac.kmutt.chart.builder.MultiSeriesBar2D;
+import th.ac.kmutt.chart.builder.MultiSeriesColumn2D;
+import th.ac.kmutt.chart.builder.MultiSeriesColumn3DLineDualY;
+import th.ac.kmutt.chart.builder.MultiSeriesLine2D;
+import th.ac.kmutt.chart.builder.MultiSeriesStackColumn2D;
+import th.ac.kmutt.chart.builder.Pie2D;
+import th.ac.kmutt.chart.builder.Pie3D;
+import th.ac.kmutt.chart.builder.Radar;
+import th.ac.kmutt.chart.builder.RealTimeAngular;
+import th.ac.kmutt.chart.builder.StackArea2D;
+import th.ac.kmutt.chart.builder.StackBar2D;
+import th.ac.kmutt.chart.builder.StackColumn2D;
+import th.ac.kmutt.chart.builder.StackedColumn3DLineDuaY;
+import th.ac.kmutt.chart.builder.StackedColumn3DLineSingleY;
+import th.ac.kmutt.chart.builder.Table;
+import th.ac.kmutt.chart.builder.VerticalLed;
 import th.ac.kmutt.chart.constant.ServiceConstant;
-import th.ac.kmutt.chart.domain.*;
-import th.ac.kmutt.chart.model.*;
+import th.ac.kmutt.chart.domain.ChartEntity;
+import th.ac.kmutt.chart.domain.ChartFilterInstanceEntity;
+import th.ac.kmutt.chart.domain.ChartInstanceEntity;
+import th.ac.kmutt.chart.domain.CommentEntity;
+import th.ac.kmutt.chart.domain.DatasourceConnectionEntity;
+import th.ac.kmutt.chart.domain.FilterEntity;
+import th.ac.kmutt.chart.domain.FilterInstanceEntity;
+import th.ac.kmutt.chart.domain.FilterMappingEntity;
+import th.ac.kmutt.chart.domain.ServiceChartMappingEntity;
+import th.ac.kmutt.chart.domain.ServiceChartMappingEntityPK;
+import th.ac.kmutt.chart.domain.ServiceEntity;
+import th.ac.kmutt.chart.domain.ServiceFilterMappingEntity;
+import th.ac.kmutt.chart.domain.ServiceFilterMappingEntityPK;
+import th.ac.kmutt.chart.domain.ServiceUserMappingEntity;
+import th.ac.kmutt.chart.domain.ServiceUserMappingEntityPK;
+import th.ac.kmutt.chart.model.ChartFilterInstanceM;
+import th.ac.kmutt.chart.model.ChartM;
+import th.ac.kmutt.chart.model.FilterInstanceM;
+import th.ac.kmutt.chart.model.FilterM;
+import th.ac.kmutt.chart.model.FilterParamM;
+import th.ac.kmutt.chart.model.FilterValueM;
+import th.ac.kmutt.chart.model.FusionChartM;
+import th.ac.kmutt.chart.model.ServiceFilterMappingM;
+import th.ac.kmutt.chart.model.ServiceM;
+import th.ac.kmutt.chart.model.UserM;
 import th.ac.kmutt.chart.repository.ChartRepository;
 import th.ac.kmutt.chart.repository.DatasourceRepository;
 import th.ac.kmutt.chart.service.ChartService;
-
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 
 @Service("chartServiceJpaImpl")
 public class ChartServiceJpaImpl implements ChartService {
@@ -73,7 +111,7 @@ public class ChartServiceJpaImpl implements ChartService {
     public List listChartEntity(ChartM param) throws DataAccessException {
         return chartRepository.listChartEntity(param);
     }
-
+    /*
     public Integer saveChartFeatureEntity(ChartFeatureEntity transientInstance) throws DataAccessException {
         return chartRepository.saveChartFeatureEntity(transientInstance);
     }
@@ -121,7 +159,7 @@ public class ChartServiceJpaImpl implements ChartService {
     public ChartFeatureMappingEntity findChartFeatureMappingEntityById(ChartFeatureMappingEntityPK id) throws DataAccessException {
         return chartRepository.findChartFeatureMappingEntityById(id);
     }
-
+    */
     public Integer saveChartFilterInstanceEntity(ChartFilterInstanceEntity transientInstance) throws DataAccessException {
         return chartRepository.saveChartFilterInstanceEntity(transientInstance);
     }
@@ -174,7 +212,7 @@ public class ChartServiceJpaImpl implements ChartService {
     public CommentEntity findCommentEntityById(String instanceId) throws DataAccessException {
         return chartRepository.findCommentEntityById(instanceId);
     }
-
+    /*
     public Integer saveFeatureEntity(FeatureEntity transientInstance) throws DataAccessException {
         return chartRepository.saveFeatureEntity(transientInstance);
     }
@@ -190,7 +228,7 @@ public class ChartServiceJpaImpl implements ChartService {
     public FeatureEntity findFeatureEntityById(Integer featureId) throws DataAccessException {
         return chartRepository.findFeatureEntityById(featureId);
     }
-    
+    */
     // filter section
     @Override
     public void saveFilter(FilterM filterModel) throws Exception {

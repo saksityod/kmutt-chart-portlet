@@ -14,7 +14,12 @@
 	        <property name="hibernate.c3p0.timeout" value="60" />
 	        <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
          	<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
-	        <property name="hibernate.connection.url" value="jdbc:mysql://10.1.130.242:3306/CHART_DB"/>
+         	<!--  
+	        <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/CHART_DB?autoReconnect=true&amp;useSSL=false"/>
+	         -->
+	        <!-- -->
+	        <property name="hibernate.connection.url" value="jdbc:mysql://10.1.130.242:3306/CHART_DB?autoReconnect=true&amp;useSSL=false"/>
+	         
 	        <property name="hibernate.connection.username" value="root"/>
 	        <property name="hibernate.connection.password" value="015482543"/>
 	        <property name="hibernate.connection.autocommit" value="true"/>
@@ -33,14 +38,23 @@
 	        <property name="hibernate.c3p0.timeout" value="60" />
 	        <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
          	<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
-	        <property name="hibernate.connection.url" value="jdbc:mysql://10.1.130.242:3306/lportal_dev_v3"/>
+         	<!-- 
+	        <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/lportal?autoReconnect=true&amp;useSSL=false"/>
+	         -->
+	        <!--  -->
+	        <property name="hibernate.connection.url" value="jdbc:mysql://10.1.130.242:3306/lportal_dev_v3?autoReconnect=true&amp;useSSL=false"/>
+	         
 	        <property name="hibernate.connection.username" value="root"/>
 	        <property name="hibernate.connection.password" value="015482543"/>
 	        <property name="hibernate.connection.autocommit" value="true"/>
 	        <property name="hibernate.show-sql" value="false"/>
 	    </properties>
 	</persistence-unit>
-	
+	<persistence-unit name="HibernatePersistenceUnitDwh" transaction-type="RESOURCE_LOCAL">
+		 <properties>
+	   </properties>
+	</persistence-unit>
+    <!--  	
 	<persistence-unit name="HibernatePersistenceUnitDwh" transaction-type="RESOURCE_LOCAL">
 		 <properties>
          	<property name="hibernate.connection.provider_class"
@@ -51,7 +65,7 @@
 	        <property name="hibernate.c3p0.idle_test_period" value="0" />
 	        <property name="hibernate.c3p0.max_statements" value="0" />
 	        <property name="hibernate.c3p0.timeout" value="60" />
-	       <!--  <property name="hibernate.connection.release_mode" value="after_transaction" /> -->
+	         <property name="connectionTestQuery" value="SELECT 1 FROM sysibm.sysdummy1"/>
 		 	<property name="hibernate.connection.driver_class" value="com.ibm.db2.jcc.DB2Driver" />
          	<property name="hibernate.dialect" value="org.hibernate.dialect.DB2Dialect" />
 	        <property name="hibernate.connection.url" value="jdbc:db2://10.1.126.140:50003/kmu_dwh"/>
@@ -59,7 +73,10 @@
 	        <property name="hibernate.connection.password" value="gxHoc=,xN"/>
 	        <property name="hibernate.connection.autocommit" value="true"/>
 	        <property name="hibernate.show-sql" value="true"/>
-	    </properties>
+	        <property name="connection.autoReconnect">true</property>
+			<property name="connection.autoReconnectForPools">true</property>
+			<property name="nection.is-connection-validation-required">true</property>
+	   </properties>
 	</persistence-unit>
-	
+	-->
 </persistence>

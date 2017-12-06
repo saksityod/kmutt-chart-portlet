@@ -1,27 +1,20 @@
 package th.ac.kmutt.chart.rest.resource;
 
-import org.apache.log4j.Logger;
-import org.hibernate.exception.ConstraintViolationException;
-import org.restlet.representation.Representation;
-import org.restlet.representation.Variant;
-import org.restlet.resource.ResourceException;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import th.ac.kmutt.chart.constant.ServiceConstant;
-import th.ac.kmutt.chart.domain.ChartFeatureInstanceEntity;
-import th.ac.kmutt.chart.domain.FeatureEntity;
-import th.ac.kmutt.chart.model.FeatureM;
-import th.ac.kmutt.chart.model.ChartFeatureM;
-import th.ac.kmutt.chart.model.ChartM;
-import th.ac.kmutt.chart.model.FeatureM;
-import th.ac.kmutt.chart.service.ChartService;
-import th.ac.kmutt.chart.xstream.common.ImakeResultMessage;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.restlet.representation.Representation;
+import org.restlet.representation.Variant;
+import org.restlet.resource.ResourceException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
+import th.ac.kmutt.chart.constant.ServiceConstant;
+import th.ac.kmutt.chart.model.FeatureM;
+import th.ac.kmutt.chart.service.ChartService;
+import th.ac.kmutt.chart.xstream.common.ImakeResultMessage;
 
 /**
  * Created by imake on 20/10/2015.
@@ -64,8 +57,8 @@ public class FeatureResource  extends BaseResource {
             if (xtarget != null) {
                 xsource = (FeatureM) xtarget;
                 if (xsource != null) {
-                    FeatureEntity domain = new FeatureEntity();
-                    BeanUtils.copyProperties(xsource, domain);
+                  //  FeatureEntity domain = new FeatureEntity();
+                    //BeanUtils.copyProperties(xsource, domain);
                     /*
                     FeatureEntityPK pk = new FeatureEntityPK();
                     if (xsource.getResearcherId() != null)
@@ -85,6 +78,8 @@ public class FeatureResource  extends BaseResource {
                             && xsource.getServiceName().length() != 0) {
                         String serviceName = xsource.getServiceName();
                         if (serviceName.equals(ServiceConstant.FEATURE_FIND_BY_ID)) {
+                        	ImakeResultMessage imakeMessage = new ImakeResultMessage();
+                        	/*
                             domain = chartService.findFeatureEntityById(xsource.getFeatureId());
                             ImakeResultMessage imakeMessage = new ImakeResultMessage();
                             if (domain != null) {
@@ -97,22 +92,24 @@ public class FeatureResource  extends BaseResource {
 
                                 imakeMessage.setResultListObj(models);
                             }
+                            */
                             return getRepresentation(entity, imakeMessage, xstream);
                         } else if (serviceName.equals(ServiceConstant.FEATURE_SAVE)) {
                             //java.sql.Timestamp now = new java.sql.Timestamp(new Date().getTime());
                             // domain.setCreatedDate(now);
                             //domain.setUpdatedDate(now);
-                            int updateRecord = chartService.saveFeatureEntity(domain);
+                            int updateRecord = 0;//chartService.saveFeatureEntity(domain);
                             return returnUpdateRecord(entity, xsource, updateRecord);
                         } else if (serviceName.equals(ServiceConstant.FEATURE_UPDATE)) {
                             //java.sql.Timestamp updatedDate = new java.sql.Timestamp(new Date().getTime());
                             //domain.setUpdatedDate(updatedDate);
-                            int updateRecord = chartService.updateFeatureEntity(domain);
+                            int updateRecord = 0;// chartService.updateFeatureEntity(domain);
                             return returnUpdateRecord(entity, xsource, updateRecord);
                         } else if (serviceName.equals(ServiceConstant.FEATURE_ITEMS_DELETE)) {
 
                         } else if (serviceName.equals(ServiceConstant.FEATURE_DELETE)) {
                             int updateRecord = 0;
+                            /*
                             try {
                                 chartService.deleteFeatureEntity(domain);
                             } catch (Exception e) {
@@ -126,6 +123,7 @@ public class FeatureResource  extends BaseResource {
                                     updateRecord = -9;
                                 }
                             }
+                            */
                             return returnUpdateRecord(entity, xsource, updateRecord);
                         } else if (serviceName.equals(ServiceConstant.FEATURE_SEARCH)) {
                             /*
@@ -172,7 +170,7 @@ public class FeatureResource  extends BaseResource {
         return null;
 
     }
-
+    /*
     private List<FeatureM> getFeatureModels(
             java.util.ArrayList<FeatureEntity> domains) {
         List<FeatureM> models = new ArrayList<FeatureM>(
@@ -186,7 +184,7 @@ public class FeatureResource  extends BaseResource {
         }
         return models;
     }
-
+	*/
     private Representation returnUpdateRecord(Representation entity, FeatureM model, int updateRecord) {
         ImakeResultMessage imakeMessage = new ImakeResultMessage();
         List<FeatureM> xsources = new ArrayList<FeatureM>(1);

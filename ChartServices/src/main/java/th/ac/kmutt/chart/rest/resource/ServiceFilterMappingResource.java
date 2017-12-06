@@ -1,6 +1,10 @@
 package th.ac.kmutt.chart.rest.resource;
 
-import org.apache.log4j.Logger;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.exception.ConstraintViolationException;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
@@ -10,19 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import th.ac.kmutt.chart.constant.ServiceConstant;
-import th.ac.kmutt.chart.domain.ChartFeatureInstanceEntity;
 import th.ac.kmutt.chart.domain.FilterEntity;
-import th.ac.kmutt.chart.domain.ServiceEntity;
 import th.ac.kmutt.chart.domain.ServiceFilterMappingEntity;
 import th.ac.kmutt.chart.domain.ServiceFilterMappingEntityPK;
-import th.ac.kmutt.chart.model.*;
+import th.ac.kmutt.chart.model.FilterM;
+import th.ac.kmutt.chart.model.ServiceFilterMappingM;
 import th.ac.kmutt.chart.service.ChartService;
 import th.ac.kmutt.chart.xstream.common.ImakeResultMessage;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by imake on 20/10/2015.

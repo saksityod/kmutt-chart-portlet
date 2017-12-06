@@ -1,6 +1,10 @@
 package th.ac.kmutt.chart.rest.resource;
 
-import org.apache.log4j.Logger;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.exception.ConstraintViolationException;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
@@ -8,16 +12,17 @@ import org.restlet.resource.ResourceException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+
 import th.ac.kmutt.chart.constant.ServiceConstant;
-import th.ac.kmutt.chart.domain.*;
-import th.ac.kmutt.chart.model.*;
+import th.ac.kmutt.chart.domain.ChartInstanceEntity;
+import th.ac.kmutt.chart.domain.CommentEntity;
+import th.ac.kmutt.chart.domain.ServiceEntity;
+import th.ac.kmutt.chart.model.ChartInstanceM;
+import th.ac.kmutt.chart.model.ChartM;
+import th.ac.kmutt.chart.model.CommentM;
+import th.ac.kmutt.chart.model.ServiceM;
 import th.ac.kmutt.chart.service.ChartService;
 import th.ac.kmutt.chart.xstream.common.ImakeResultMessage;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by imake on 20/10/2015.
@@ -193,6 +198,7 @@ public class ChartInstanceResource  extends BaseResource {
             if (domain.getChartByChartId() != null) {
                 ChartM chartM = new ChartM();
                 BeanUtils.copyProperties(domain.getChartByChartId(), chartM);
+                /*
                 if (domain.getChartByChartId().getChartFeatureByChartId() != null) {
                     ChartFeatureM chartFeatureM = new ChartFeatureM();
                     BeanUtils.copyProperties(domain.getChartByChartId().getChartFeatureByChartId(), chartFeatureM);
@@ -200,6 +206,8 @@ public class ChartInstanceResource  extends BaseResource {
                     chartM.setChartFeature(chartFeatureM);
                     chartM.setPaging(null);
                 }
+                */
+                chartM.setPaging(null);
                 model.setChart(chartM);
             }
             // set ServiceM
