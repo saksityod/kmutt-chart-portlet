@@ -46,7 +46,7 @@ import org.codehaus.jettison.json.JSONObject;
 
 @Controller("chartCommonController")
 @RequestMapping("VIEW")
-@SessionAttributes({ "chartSettingForm", "chartCommonForm" })
+@SessionAttributes({ "chartSettingForm", "chartCommonForm","globalFilter" })
 public class ChartCommonPortlet {
 
 	/*
@@ -88,7 +88,8 @@ public class ChartCommonPortlet {
 	@RenderMapping
 	public String displayChart(PortletRequest request, Model model) {
 		ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-
+		logger.info("into Common Portlet globalFilter["+model.containsAttribute("globalFilter")+"]");
+		
 		// get user
 		String userId = "";
 		User currentUser = null;
@@ -161,6 +162,8 @@ public class ChartCommonPortlet {
 //		logger.info("=="+instanceId+"==> Start Chart Setting.");
 		
 		logger.info("=="+instanceId+"==> Start Chart Building.");
+	if(model.containsAttribute("globalFilter")){
+		chartSettingForm.setIssubmit("1");
 		if (chartInstanceM != null) {
 			// get chart object
 			List<FilterM> allFilter = new ArrayList<FilterM>();
@@ -184,8 +187,10 @@ public class ChartCommonPortlet {
 			FilterM paramServicefilter = new FilterM();
 			String userIdno = (String) request.getPortletSession().getAttribute("userId",
 					PortletSession.APPLICATION_SCOPE);
-			paramServicefilter.setUserid(userId);
-			paramServicefilter.setServiceId(Integer.valueOf(chartInstanceM.getServiceId()));
+			if(chartInstanceM.getServiceId()!=null){
+				paramServicefilter.setUserid(userId);
+				paramServicefilter.setServiceId(Integer.valueOf(chartInstanceM.getServiceId()));
+			}
 			
 		
 			logger.info("=="+instanceId+"==> ---> Call chartService.getFilterService(paramServicefilter)");
@@ -262,6 +267,10 @@ public class ChartCommonPortlet {
 			// add filter into view
 			model.addAttribute("filters", internalFilter);
 		}
+	}else{
+		chartSettingForm.setIssubmit("0");
+	}
+	logger.info(" issubmit["+chartSettingForm.getIssubmit()+"]");
 		model.addAttribute("chartSettingForm", chartSettingForm);
 
 		return "chart/showChart";
@@ -485,6 +494,7 @@ public class ChartCommonPortlet {
 		List<FilterM> filterList = new ArrayList<FilterM>();
 		try {
 			org.codehaus.jettison.json.JSONObject filterObj = new JSONObject(filterRequest); // convert
+			if(filterObj.has("instance")){
 			String instanceId = filterObj.getString("instance");
 			org.codehaus.jettison.json.JSONArray filters = filterObj.getJSONArray("filters");
 			for (int i = 0; i < filters.length(); i++) {
@@ -498,11 +508,14 @@ public class ChartCommonPortlet {
 				filterList.add(f);
 			} // retrive filerList from ajax
 				// call service
-
+			
 			FusionChartM chartObj = requestChartObject(instanceId, filterList);
 			content.put("chartType", chartObj.getChartType());
 			content.put("chartJson", chartObj.getChartJson());
 			header.put("success", "1");
+			}else{
+				header.put("success", "0");
+			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 			header.put("success", "0");

@@ -222,6 +222,11 @@
         	$("#${ns}chartContainer").addClass("minChartContainer");
         </c:if>
         
+        <c:if test="${chartSettingForm.issubmit=='0' }">
+    		$("#${ns}chartContainer").html("Wait for Filter Submit");
+    		//$("#${ns}chartContainer").addClass("minChartContainer");
+    	</c:if>
+        
         F${ns}_submitAjax();
         
     });

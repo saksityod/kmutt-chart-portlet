@@ -49,7 +49,7 @@ import java.util.*;
 
 @Controller("globalFilterController")
 @RequestMapping("VIEW")
-@SessionAttributes({"globalFilterForm"})
+@SessionAttributes({"globalFilterForm","globalFilter"})
 public class GlobalFilterController {
 
     private static final Logger logger = Logger.getLogger(GlobalFilterController.class);
@@ -71,7 +71,7 @@ public class GlobalFilterController {
     }
 
     @RequestMapping("VIEW") 
-    public String showFilter(PortletRequest request, Model model) {
+    public String showFilter(PortletRequest request,javax.portlet.PortletResponse response, Model model) {
     	ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         String instanceId=themeDisplay.getPortletDisplay().getInstanceId();
         PortletSession portletSession = request.getPortletSession();  
@@ -129,6 +129,8 @@ public class GlobalFilterController {
         model.addAttribute("textType",DefaultConstant.filterTypeList.get(0)); // input text
         model.addAttribute("selectType",DefaultConstant.filterTypeList.get(1)); // select
         model.addAttribute("multipleType",DefaultConstant.filterTypeList.get(2)); // multiple
+        
+        
         return "filter/showFilter";
     }
 
@@ -191,7 +193,7 @@ public class GlobalFilterController {
         globalFilterIns.setFilterList(filterForm.getFilterList());
        	QName qname = new QName("http://liferay.com/events","paramOverride","x");
        	response.setEvent(qname, globalFilterIns); 
-        
+       	model.addAttribute("globalFilter",globalFilterIns);
         //re show 
        //model.addAttribute("FilterMList", gFilters);
     }

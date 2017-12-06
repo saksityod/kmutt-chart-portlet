@@ -188,9 +188,14 @@ public class ChartCommonSettingController {
             chartService.updateChartInstance(chartInstanceM);
         // save FilterInstance
         ServiceFilterMappingM sfm = new ServiceFilterMappingM();
-        sfm.setServiceId(Integer.valueOf(chartSettingForm.getDataSource()));
+        if(chartSettingForm.getDataSource()!=null && chartSettingForm.getDataSource().length()>0 
+        		&& !chartSettingForm.getDataSource().equalsIgnoreCase("NULL"))
+        	sfm.setServiceId(Integer.valueOf(chartSettingForm.getDataSource()));
         @SuppressWarnings("unchecked")
-		List<ServiceFilterMappingM> sfmList = chartService.listServiceFilterMapping(sfm);
+		List<ServiceFilterMappingM> sfmList =null;
+        if(chartSettingForm.getDataSource()!=null && chartSettingForm.getDataSource().length()>0
+        		&& !chartSettingForm.getDataSource().equalsIgnoreCase("NULL"))
+        	sfmList = chartService.listServiceFilterMapping(sfm);
         List<FilterM> saveFilterList = new ArrayList<FilterM>();
         if(sfmList!=null){
 	        for( ServiceFilterMappingM sfmItem : sfmList){

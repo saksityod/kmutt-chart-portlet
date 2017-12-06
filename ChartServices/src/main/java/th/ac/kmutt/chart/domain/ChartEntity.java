@@ -21,7 +21,7 @@ public class ChartEntity implements Serializable {
     @Basic
     @Column(name = "CHART_TYPE")
     private String chartType;
-
+/*
     @Basic
     @Column(name = "CHART_MODEL")
     private String chartModel;
@@ -29,7 +29,7 @@ public class ChartEntity implements Serializable {
     @Basic
     @Column(name = "CHART_XML")
     private String chartXml;
-
+*/
     @Basic
     @Column(name = "CHART_JSON")
     private String chartJson;
@@ -45,8 +45,8 @@ public class ChartEntity implements Serializable {
     @Column(name = "ADV_PROP")
     private String advProp;
 
-    @OneToOne(mappedBy = "chartByChartId")
-    private ChartFeatureEntity chartFeatureByChartId;
+    //@OneToOne(mappedBy = "chartByChartId")
+    //private ChartFeatureEntity chartFeatureByChartId;
     /*
     private Collection<ChartFeatureInstanceEntity> chartFeatureInstancesByChartId;
     private Collection<ChartFeatureMappigEntity> chartFeatureMappigsByChartId;
@@ -80,7 +80,7 @@ public class ChartEntity implements Serializable {
         this.chartType = chartType;
     }
 
-
+/*
     public String getChartModel() {
         return chartModel;
     }
@@ -97,7 +97,7 @@ public class ChartEntity implements Serializable {
     public void setChartXml(String chartXml) {
         this.chartXml = chartXml;
     }
-
+*/
 
     public String getChartJson() {
         return chartJson;
@@ -126,8 +126,8 @@ public class ChartEntity implements Serializable {
         if (chartId != null ? !chartId.equals(that.chartId) : that.chartId != null) return false;
         if (chartName != null ? !chartName.equals(that.chartName) : that.chartName != null) return false;
         if (chartType != null ? !chartType.equals(that.chartType) : that.chartType != null) return false;
-        if (chartModel != null ? !chartModel.equals(that.chartModel) : that.chartModel != null) return false;
-        if (chartXml != null ? !chartXml.equals(that.chartXml) : that.chartXml != null) return false;
+       // if (chartModel != null ? !chartModel.equals(that.chartModel) : that.chartModel != null) return false;
+        //if (chartXml != null ? !chartXml.equals(that.chartXml) : that.chartXml != null) return false;
         if (chartJson != null ? !chartJson.equals(that.chartJson) : that.chartJson != null) return false;
         if (activeFlag != null ? !activeFlag.equals(that.activeFlag) : that.activeFlag != null) return false;
 
@@ -139,8 +139,8 @@ public class ChartEntity implements Serializable {
         int result = chartId != null ? chartId.hashCode() : 0;
         result = 31 * result + (chartName != null ? chartName.hashCode() : 0);
         result = 31 * result + (chartType != null ? chartType.hashCode() : 0);
-        result = 31 * result + (chartModel != null ? chartModel.hashCode() : 0);
-        result = 31 * result + (chartXml != null ? chartXml.hashCode() : 0);
+       // result = 31 * result + (chartModel != null ? chartModel.hashCode() : 0);
+       // result = 31 * result + (chartXml != null ? chartXml.hashCode() : 0);
         result = 31 * result + (chartJson != null ? chartJson.hashCode() : 0);
         result = 31 * result + (activeFlag != null ? activeFlag.hashCode() : 0);
         return result;
@@ -162,7 +162,7 @@ public class ChartEntity implements Serializable {
         this.advProp = advProp;
     }
 
-
+/*
     public ChartFeatureEntity getChartFeatureByChartId() {
         return chartFeatureByChartId;
     }
@@ -170,6 +170,6 @@ public class ChartEntity implements Serializable {
     public void setChartFeatureByChartId(ChartFeatureEntity chartFeatureByChartId) {
         this.chartFeatureByChartId = chartFeatureByChartId;
     }
-
+*/
 
 }

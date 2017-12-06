@@ -83,12 +83,19 @@ public class FilterController {
         Set<String> types = new HashSet<String>(DefaultConstant.filterTypeList);
         filterForm.setTypes(types);
         filterForm.setFilters(filters);
-        filterForm.setFilterList(new HashSet<FilterM>(filters));
+        Set<FilterM> filterList = new HashSet<FilterM>();
+		if(filters!=null)
+			filterList = new HashSet<FilterM>(filters);
+		
+        
+        //filterForm.setFilterList(new HashSet<FilterM>(filters));
+		filterForm.setFilterList(filterList);
         filterForm.setInitialFilterList(new HashSet<FilterM>());
      //   filterForm.setFilterUsedList(filterUsedList);
         
         List<ConnectionM> cons  = chartService.listConnection();
-        filterForm.setConnections(new  HashSet<ConnectionM>(cons));
+        if(cons!=null)
+        	filterForm.setConnections(new  HashSet<ConnectionM>(cons));
         
         model.addAttribute("filterForm",filterForm);
         return "configuration/filter";

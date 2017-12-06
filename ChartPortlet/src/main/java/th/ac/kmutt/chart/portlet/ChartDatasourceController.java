@@ -82,7 +82,9 @@ public class ChartDatasourceController {
 		List<FilterM> filters = chartService.listFilter(f);
 		Set<FilterM> initialFilterNone = new HashSet<FilterM>();
 		dsf.setInitialFilterList(initialFilterNone);
-		Set<FilterM> filterList = new HashSet<FilterM>(filters);
+		Set<FilterM> filterList = new HashSet<FilterM>();
+		if(filters!=null)
+			filterList = new HashSet<FilterM>(filters);
 		dsf.setFilterList(filterList);
 
 		// x chart

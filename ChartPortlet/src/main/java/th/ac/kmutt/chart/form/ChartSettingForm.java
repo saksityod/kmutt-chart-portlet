@@ -25,6 +25,7 @@ public class ChartSettingForm extends CommonForm implements Serializable {
     private String chartSubTitle;
     private String titleFromFilter;
     private String globalFilterString; // manual
+    private String issubmit;
     public String getChartType() {
         return chartType;
     }
@@ -167,4 +168,13 @@ public class ChartSettingForm extends CommonForm implements Serializable {
 	public void setGlobalFilterString(String globalFilterString) {
 		this.globalFilterString = globalFilterString;
 	}
+
+	public String getIssubmit() {
+		return issubmit;
+	}
+
+	public void setIssubmit(String issubmit) {
+		this.issubmit = issubmit;
+	}
+	
 }
