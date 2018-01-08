@@ -128,6 +128,13 @@ public class DatasourceRepository {
     	properties.put("hibernate.connection.password", dsConfig.getPassword());
     	properties.put("hibernate.dialect", dsConfig.getDialect());
     	properties.put("hibernate.show-sql", "true");
+    	properties.put("hibernate.connection.autocommit","true");
+    	properties.put("hibernate.c3p0.max_size","100");
+    	properties.put("hibernate.c3p0.min_size","1");
+    	properties.put("hibernate.c3p0.acquire_increment","1");
+    	properties.put("hibernate.c3p0.idle_test_period","0");
+    	properties.put("hibernate.c3p0.max_statements","0");
+    	properties.put("hibernate.c3p0.timeout","60");
     	
     	EntityManagerFactory emf = Persistence.createEntityManagerFactory("HibernatePersistenceUnitDwh",properties);
     	EntityManager em = emf.createEntityManager();
