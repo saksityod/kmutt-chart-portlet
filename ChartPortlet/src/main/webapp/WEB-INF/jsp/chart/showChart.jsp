@@ -159,10 +159,12 @@
 				</div>
 			</c:forEach>
 		</c:if>
+		<c:if test="${chartSettingForm.issubmit=='1' }"> 
 		<div style="display: inline-block">
 			<input type="button" class="btn btn-primary"
 				onclick="F${ns}_submitAjax()" value="submit" />
 		</div>
+		</c:if>
 	</form:form>
 </c:if>
 
@@ -226,8 +228,9 @@
     		$("#${ns}chartContainer").html("Wait for Filter Submit");
     		//$("#${ns}chartContainer").addClass("minChartContainer");
     	</c:if>
-        
-        F${ns}_submitAjax();
+    	 <c:if test="${chartSettingForm.issubmit=='1' }"> 
+        	F${ns}_submitAjax();
+        </c:if>
         
     });
     
