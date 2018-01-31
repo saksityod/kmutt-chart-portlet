@@ -49,6 +49,7 @@
          	<!-- 
 	        <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/lportal?autoReconnect=true&amp;useSSL=false"/>
 	         -->
+	         
 	        <!-- -->
 	        <!--  -->
 	        <property name="hibernate.connection.url" value="jdbc:mysql://10.1.130.242:3306/lportal_dev_v3?autoReconnect=true&amp;useSSL=false"/>
