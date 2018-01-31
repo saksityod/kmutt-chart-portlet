@@ -18,10 +18,18 @@
 	        <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/CHART_DB?autoReconnect=true&amp;useSSL=false"/>
 	         -->
 	        <!-- -->
+	        <!-- --> 
 	        <property name="hibernate.connection.url" value="jdbc:mysql://10.1.130.242:3306/CHART_DB?autoReconnect=true&amp;useSSL=false"/>
 	          
 	        <property name="hibernate.connection.username" value="root"/>
 	        <property name="hibernate.connection.password" value="015482543"/>
+	        
+	        <!--  
+	        <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/CHART_DB?autoReconnect=true&amp;useSSL=false"/>
+	          
+	        <property name="hibernate.connection.username" value="root"/>
+	        <property name="hibernate.connection.password" value="P@ssw0rd"/>
+	        -->
 	        <property name="hibernate.connection.autocommit" value="true"/>
 	        <property name="hibernate.show-sql" value="true"/>
 	    </properties>
@@ -42,10 +50,17 @@
 	        <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/lportal?autoReconnect=true&amp;useSSL=false"/>
 	         -->
 	        <!-- -->
+	        <!--  -->
 	        <property name="hibernate.connection.url" value="jdbc:mysql://10.1.130.242:3306/lportal_dev_v3?autoReconnect=true&amp;useSSL=false"/>
 	          
 	        <property name="hibernate.connection.username" value="root"/>
 	        <property name="hibernate.connection.password" value="015482543"/>
+	        <!--  
+	        <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/lportal?autoReconnect=true&amp;useSSL=false"/>
+	          
+	        <property name="hibernate.connection.username" value="root"/>
+	        <property name="hibernate.connection.password" value="P@ssw0rd"/>
+	        -->
 	        <property name="hibernate.connection.autocommit" value="true"/>
 	        <property name="hibernate.show-sql" value="false"/>
 	    </properties>
