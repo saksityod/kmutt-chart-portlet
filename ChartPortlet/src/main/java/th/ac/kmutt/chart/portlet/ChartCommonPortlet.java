@@ -270,7 +270,6 @@ public class ChartCommonPortlet {
 	}else{
 		chartSettingForm.setIssubmit("0");
 	}
-	//chartSettingForm.setIssubmit("1");
 	logger.info(" issubmit["+chartSettingForm.getIssubmit()+"]");
 		model.addAttribute("chartSettingForm", chartSettingForm);
 
